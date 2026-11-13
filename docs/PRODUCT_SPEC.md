@@ -1,55 +1,43 @@
-# Product Specification — Media Capture MVP
+# Product specification — native Media Capture v0.1
 
-## Product intent
+## Objective
 
-Create a **low-friction media journal** rather than another general-purpose AI knowledge organizer. The owner's primary goals are (1) effortless daily capture across media formats, (2) a brief evening reflection on selected captures, and (3) simple recurring reflection. This document describes the *planned* first milestone; it does not claim the feature works yet.
+Minimize setup and capture effort: share a URL or text, prefix local `HH:mm`,
+and append through Obsidian's documented Capture to Daily Note action.
 
-## MVP-1: iPhone YouTube capture
-
-**Trigger:** User chooses **Share** in YouTube and runs a configured iOS Shortcut or Obsidian Share Sheet Location.
-
-**Destination:** The existing private Obsidian vault, named `My Life Knowledge Base`, in `01 Daily Journal/YYYY-MM-DD.md` using the daily-note mechanism.
-
-**Target section:** `#### 오늘의 인풋`.
-
-**Canonical visible format:**
-
-```
-- HH:mm | YouTube | [Title](https://www.youtube.com/watch?v=...)
+```text
+- 09:32 | Media | https://youtu.be/TEST0000001
 ```
 
-**Rules:**
-- Daily Note filename holds the date. Never add a repeated date on each capture.
-- `HH:mm` is the local **capture time**, not viewing time or video publication time.
-- Preserve at least the original URL even if title extraction fails. Use `YouTube video` as a fallback title.
-- Never overwrite existing Daily Note text or user formatting. Append only under the designated heading when supported.
-- Handle the case where today's Daily Note does not exist yet. Research/verify a safe workflow on device before claiming reliable background capture.
-- Avoid duplicate entries where feasible, but never silently drop distinct annotations on the same URL.
-- A device may be offline; make failures visible and retry safely without losing the original shared URL.
-- No paid API or external server is required for this initial capture.
+## Default contract
 
-## Acceptance tests
+- Five actions: Date → Format Date → Get Text from Input → Text → Capture to
+  Daily Note. Share Sheet input is configured for URLs and Text.
+- Use a fictional test vault and select Append. Capture adds no date to the body.
+- Keep shared content as supplied. `Media` is a fixed label, not source inference.
+  No separate title is required and no web metadata is requested.
+- Place `#### 오늘의 인풋` last in the template and existing Daily Note. This is
+  a setup requirement, not automatic heading routing. Verify native append
+  placement and preservation of earlier content on-device.
+- No Shortcut-side validation, deduplication, regex, custom URI, or retry logic.
+  Duplicate captures are expected. Multiline text remains multiline.
+- Do not promise automatic first-day creation or template application before a
+  device test. Manually opening today's test note is an explicit workaround.
 
-1. Share a public YouTube video in iPhone YouTube → one new item under `오늘의 인풋`.
-2. The Daily Note filename is the only visible date; record shows local `HH:mm`.
-3. Existing notes and templates remain unchanged.
-4. A capture still preserves the URL when title lookup fails.
-5. A new day works without manually creating the daily note, or the limitation is documented and clearly addressed.
-6. Mac and iPad receive the new item after iCloud synchronization.
-7. No data from the vault enters the public Git repository.
+## Acceptance
 
-## Following milestones
+The default must be buildable from the short guide, accept synthetic shared
+content, append without damaging existing text, and display local time without
+adding a date. User-reported November 12 tests confirm basic URL/text capture
+and observed heading placement without repeated dates. Image contents were not captured and
+long OCR text reduced scanability. Remaining cases are tracked in
+[IOS_TEST_PLAN.md](IOS_TEST_PLAN.md).
+Missing-note creation must be characterized, even if a manual-open workaround is
+needed. No automated Python test can certify native app behavior.
 
-**MVP-2:** Social post / podcast / web link / quick voice transcription / book quote captured with consistent source and time metadata.
+## Deferred and experimental
 
-**MVP-3:** One-screen evening review displaying the day's captures; user chooses items and speaks or types their own short reflection. The system creates a linked Insight Note only after user confirmation.
-
-**MVP-4:** Weekly review of captured media, user-authored reflections, unresolved questions, and optional goals/next steps. AI interpretation must cite sources and label uncertainty.
-
-## Non-goals for MVP-1
-
-- Passive collection of every viewed YouTube video
-- Unattended publishing to social media
-- Auto-generating personal opinions
-- Importing confidential work or patient data
-- Live, complete export of all ChatGPT conversations
+Cleanup, deduplication, title enrichment, and source classification may be handled
+by a later processing engine. No such engine runs today. The previous
+[advanced Shortcut design](../shortcuts/experimental/README.md) and Python helpers
+remain optional experiments, not default requirements or mobile guarantees.
