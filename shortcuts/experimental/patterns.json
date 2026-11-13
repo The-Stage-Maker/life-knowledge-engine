@@ -1,0 +1,5 @@
+{
+  "video_url": "^https?://(?:youtu\\.be/|(?:(?:www|m|music)\\.)?youtube\\.com/(?:watch\\?v=|shorts/|live/|embed/))([A-Za-z0-9_-]{11})(?:[?&#][^\\s<>\"\\\\|]*)?$",
+  "input_heading": "(?m)^#### 오늘의 인풋[ \\t]*\\r?$",
+  "capture_row": "(?m)^- [0-9]{2}:[0-9]{2} \\| YouTube \\| [^\\r\\n]*https?://(?:youtu\\.be/|(?:(?:www|m|music)\\.)?youtube\\.com/(?:watch\\?v=|shorts/|live/|embed/))VIDEO_ID(?=[?&#)\\s]|$)"
+}

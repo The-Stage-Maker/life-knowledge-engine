@@ -2,88 +2,76 @@
 
 **Capture what matters. Reflect with ease.**
 
-*A low-friction media journal that helps people capture everyday encounters with media, add their own reflections, and revisit meaningful patterns over time.*
+A low-friction personal media journal: share a source into today's Obsidian Daily
+Note, then return later to reflect.
 
-> **Status:** Early development (v0.1). This repository documents a prototype and its roadmap—not a finished product.
+## iPhone Media Capture v0.1
 
-## Why this project?
+**Status: basic iPhone capture confirmed by user-reported tests on November 12,
+2026; edge-case verification remains pending.** No installable Shortcut export
+is included in this repository.
 
-The most difficult part of a personal knowledge system is often not analysis. It is capturing something worth remembering *at the moment it happens*, and having a simple way to revisit it at the end of the day.
-
-Life Knowledge Engine focuses on two interactions:
-
-1. **Capture:** Share a video, social post, podcast, article, book quote, or spontaneous idea from a phone with minimal effort.
-2. **Reflect:** At night, review today's captured items and attach a few sentences of personal thought to the ones that matter.
-
-Later features will support weekly reflection, goals, and optional AI-assisted writing. The project deliberately prioritizes the everyday experience over a complex second-brain dashboard.
-
-## Planned experience
-
-```text
-Phone share / voice / photo
-          |
-          v
-Today's Obsidian Daily Note
-    time + type + link/text
-          |
-          v
-Evening review: select + reflect
-          |
-          v
-Source-linked insight (optional)
-          |
-          v
-Weekly review and future writing
-```
-
-**Example (synthetic):**
+Default workflow: Share URL or text → local time → Markdown text → Obsidian's
+native **Capture to Daily Note**, configured to append to a fictional test vault.
 
 ```markdown
 #### 오늘의 인풋
-- 09:32 | YouTube | [Example talk](https://www.youtube.com/watch?v=example)
-- 12:45 | Podcast | [Example episode](https://example.com/episode)
+- 09:32 | Media | https://youtu.be/TEST0000001
 ```
 
-The date is represented once by the Daily Note filename, such as `2026-11-11.md`; each captured item displays only the capture time.
+The capture adds only `HH:mm`, not a date. Put the input heading in the **final
+section** of the daily template and existing note. Observed captures appeared
+under that heading; placement with other template layouts remains untested.
+There is no heading search, deduplication, title lookup,
+regex, or custom URI in the default Shortcut. Repeated shares may create duplicates.
 
-## Current progress
+## November 12 iPhone observations
 
-- [x] Private Obsidian vault, synced across Mac, iPad, and iPhone
-- [x] Daily Journal, Source, Insight, and Topic templates
-- [x] Manual Source-to-Insight-to-Topic link test
-- [x] Local Git repository created
-- [ ] iPhone YouTube share to Daily Note with capture time
-- [ ] Generalize capture to social posts, podcasts, voice, and book quotes
-- [ ] Evening media review and short reflection
-- [ ] Weekly review
-- [ ] Optional AI enrichment and content generation
+These results were reported by the user, not independently reproduced by the
+repository tools. No actual URLs, book text, images, or private notes were collected.
 
-## Technology (planned)
+- **Confirmed success:** YouTube URL appended with an `HH:mm` timestamp; Threads,
+  Facebook, and Apple Podcasts episode URLs also appended successfully.
+- **Confirmed placement:** All observed entries appeared under `오늘의 인풋` in
+  the test Daily Note, without repeating the date.
+- **Confirmed limitations:** Sharing a book-page image captured only its filename,
+  not its contents. Separately OCR-extracted text appended successfully, but long
+  text made the Daily Note difficult to scan. The Shortcut does not perform OCR.
+- **Still untested:** First-day note creation and template application, duplicate
+  shares, offline use, and cross-device synchronization. Other layout, permission,
+  and clock edge cases are listed in the [test record](docs/IOS_TEST_PLAN.md).
 
-- **Obsidian:** private, Markdown-based record storage
-- **iOS Shortcuts / Obsidian Share Sheet:** low-friction mobile capture
-- **Python:** local formatting, deduplication, and future processing
-- **OpenAI / Gemini APIs (optional):** enrichment and review after opt-in
-- **GitHub:** public code, tests, and synthetic demonstrations
+For now, prefer URLs or short text for a scannable journal. Image capture and a
+long-text storage workflow remain future work; no automatic extraction or
+summarization is implemented.
 
-## Development approach
+## Start here
 
-The public repository is separate from the private Obsidian vault. We will build in small, testable releases. Each release should show user steps saved, supported media types, traceability, and failure handling. See [Product Specification](docs/PRODUCT_SPEC.md), [Architecture](docs/ARCHITECTURE.md), and [Security](docs/SECURITY.md).
+Follow the [five-action iPhone guide](shortcuts/README.md), using only the
+fictional `LKE Capture Test` vault. Record results in the
+[manual test plan](docs/IOS_TEST_PLAN.md). Missing-note creation, template
+application, permission edge cases, offline behavior, and sync remain pending.
 
-## Privacy
+The earlier [advanced design](shortcuts/experimental/README.md) is retained as an
+optional experiment. Its features are not part of the beginner setup. A later
+processing engine may handle cleanup and deduplication; none is currently wired in.
 
-This repository must never contain personal journal entries, exported ChatGPT conversations, private media logs, patient information, confidential workplace information, credentials, or actual vault files. All examples are synthetic. AI outputs must never be presented as the user's thoughts without confirmation.
+## Automated validation
 
-## Roadmap
+Python 3.10+; standard library only. Run from the repository root:
 
-- **v0.1 — Capture:** Share one YouTube URL from iPhone and record it under today's input heading with local capture time.
-- **v0.2 — Multi-input:** Support social links, podcast links, quick voice text, and book excerpts; retain source attribution.
-- **v0.3 — Evening Reflection:** Review today's items and add personal reflections with near-zero note management.
-- **v0.4 — Weekly Review:** Compile a source-linked weekly digest and optional next actions.
-- **Later:** Opt-in, evidence-grounded AI analysis and writing support.
+```sh
+python3 -m unittest discover -s tests -v
+```
 
-The initial target is a usable prototype by the end of December 2026; milestones may change after real-device testing.
+`src/lke/native_capture.py` models the default Text action with synthetic strings.
+It does not run Shortcuts or write notes. Other helpers and tests retain advanced
+formatting, URL validation, deduplication, insertion, and URI experiments.
+Passing these tests **does not establish working iPhone capture**.
 
-## Getting started
+## Development and privacy
 
-See the [iPhone Capture Prototype](shortcuts/README.md) for an initial, no-server workflow and the [Development Handoff](docs/CODEX_NEXT_TASK.md) for the next Codex task. This prototype is not yet installed or tested on the owner's devices.
+See [Product specification](docs/PRODUCT_SPEC.md), [Architecture](docs/ARCHITECTURE.md),
+[Development handoff](docs/CODEX_NEXT_TASK.md), and [Security](docs/SECURITY.md).
+All fixtures are fictional. No private vault, workplace data, patient records,
+credentials, server, or separate mobile app is required.
